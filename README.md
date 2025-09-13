@@ -1,5 +1,5 @@
 # Movie Recommendation Site!
-![Image][Download premium image of Hand holding entertainment objects isolated about blue backgrounds, hands up, people, smartphone, and ticket 379436](https://github.com/user-attachments/assets/ed6f3fbd-d602-4ac9-a39e-96b4cd734332)
+![Image](https://github.com/AwendyG/Capstone_project/blob/master/Download%20premium%20image%20of%20Hand%20holding%20entertainment%20objects%20isolated%20about%20blue%20backgrounds%2C%20hands%20up%2C%20people%2C%20smartphone%2C%20and%20ticket%20379436.jpg)
 
 
 Hi👋

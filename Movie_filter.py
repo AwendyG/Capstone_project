@@ -24,41 +24,41 @@ def parse_date_safe(date_str):
 # --- Recommendation function (fixed duplicate issue) ---
 def get_recommendations(selected_title, top_n=None, dedupe_by_title=True):
     """
-    Find movies whose titles contain selected_title, pick the first match as the
-    "selected" movie, then search all movies for description-word overlap.
+Find movies whose titles contain selected_title, pick the first match as the
+    "selected" movie, then search all movies for descriptio and title match
 
     top_n: if given, return only the top N matches; otherwise return all matches.
     dedupe_by_title: if True, return only one recommendation per movie title
                      (prevents repeated identical titles). Set False to allow
                      different rows with same title (e.g., remakes) to appear.
     """
-    # find candidate selected rows (title contains the search text)
+    #Checks to seee if the titel sellevted matches any other titles in the dataset
     movies = df[df["title"].str.lower().str.contains(selected_title.lower(), na=False)]
     if movies.empty:
         return []
 
-    # choose the first matched movie as the 'selected' one
+    # choose the first matched movie as the 'selected' one From all the movies that matched your search (movies), this picks the first one.
+    #like: “If I type Dream, and I get 3 rows back, take the very first row to represent the chosen movie.”
     selected_movie = movies.iloc[0]
     selected_index = selected_movie.name
     selected_desc = str(selected_movie.get("overview", ""))
     selected_words = tokenize_and_stem(selected_desc)
 
-    similarities = []
+    similarities = []#add the recommendations to a list
     seen = set()  # used to avoid adding the same title/overview multiple times
 
     for idx, row in df.iterrows():
-        # skip the exact same row (same index)
+# Skip the chosen movie itself Don’t recommend the movie that was already picked.
         if idx == selected_index:
             continue
 
-        # skip rows that are exact duplicates of the selected row
-        # (same title and same overview). This avoids the "same movie repeated" issue.
+        # If another row has the same title and same overview as the selected movie, skip it too to avoid exact duplicates in the dataset.
         if (str(row.get("title", "")).lower() == str(selected_movie.get("title", "")).lower()
                 and str(row.get("overview", "")) == selected_desc):
             continue
 
-        desc_words = tokenize_and_stem(row.get("overview", ""))
-        overlap = len(selected_words & desc_words)
+        desc_words = tokenize_and_stem(row.get("overview", "")) #stem the other movie's description
+        overlap = len(selected_words & desc_words) #check to see whether the other movie's decription matches the selected movie
 
         if overlap > 0:
             title = row.get("title", "")
